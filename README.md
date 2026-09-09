@@ -14,7 +14,8 @@ compiled DLL can obtain the corresponding source, as the licence requires.
 
 The distributed mod archive contains **one binary built by the mod author**:
 `SentientSands.dll`. Its complete source is in the `src/` folder of this
-repository.
+repository, and the exact KenshiLib headers it is compiled against are in
+`KenshiLib.zip` (third-party, GPL v3, see `KenshiLib_ORIGIN.md`).
 
 Everything else that looks like an executable in the archive is the **official
 unmodified CPython 3.13 runtime for Windows**, bundled under
@@ -41,11 +42,20 @@ API the user has configured with their own key.
 - Language standard: C++ (VS2010-era subset; no range-based `for`)
 - Source files: UTF-8 **without BOM**, CRLF line endings
 
-The project links against **KenshiLib** from
-[RE_Kenshi](https://github.com/BFrizzleFoShizzle/RE_Kenshi) — its headers must
-be available at `../RE_Kenshi_Source/KenshiLib/Include/`, matching the include
-paths at the top of `main.cpp`. Build with **Rebuild Solution**; the output
-`SentientSands.dll` goes into the mod folder next to `SentientSands.mod`.
+The project links against **KenshiLib** by BFrizzleFoShizzle, the library
+behind [RE_Kenshi](https://github.com/BFrizzleFoShizzle/RE_Kenshi). The exact
+headers this DLL is built against ship here as **`KenshiLib.zip`** (854 files),
+because they are an older snapshot and differ from current upstream master in
+26 of 852 files — see `KenshiLib_ORIGIN.md` for the list and the reason, and
+`KenshiLib_LICENSE.txt` for their licence. Building against current upstream
+headers will fail.
+
+Unpack `KenshiLib.zip` so that a `KenshiLib` folder appears. The include paths
+at the top of `main.cpp` expect the headers at
+`../RE_Kenshi_Source/KenshiLib/Include/`, so place the folder accordingly, or
+adjust the include directories in your project settings. Build with **Rebuild
+Solution**; the output `SentientSands.dll` goes into the mod folder next to
+`SentientSands.mod`.
 
 No Visual Studio project file is included in this repository; the sources are
 compiled as a single DLL project with the settings listed above.
@@ -81,8 +91,11 @@ Python), распространяется отдельно, в архиве мо
 1. Visual Studio, набор инструментов **Windows 7.1 SDK**.
 2. Конфигурация **Release**, платформа **x64**, набор символов
    **Multi-Byte**.
-3. Рядом должны лежать заголовки **KenshiLib** из RE_Kenshi по пути
-   `../RE_Kenshi_Source/KenshiLib/Include/`.
+3. Рядом должны лежать заголовки **KenshiLib** по пути
+   `../RE_Kenshi_Source/KenshiLib/Include/`. Они лежат в этом же репозитории,
+   в архиве `KenshiLib.zip` — распакуй его и бери оттуда, а **не** свежие с
+   гитхаба: наша копия старее, и на новой сборка ломается. Подробности — в
+   `KenshiLib_ORIGIN.md`.
 4. **Rebuild Solution**. Готовую `SentientSands.dll` положить в папку мода
    рядом с `SentientSands.mod`.
 
@@ -91,3 +104,8 @@ Python), распространяется отдельно, в архиве мо
 ### Лицензия
 
 GNU GPL v3. Полный текст лицензии — в файле `LICENSE`.
+
+Архив `KenshiLib.zip` — чужая работа: заголовки библиотеки KenshiLib
+авторства BFrizzleFoShizzle, тоже под GPL v3. Её лицензия лежит отдельно, в
+`KenshiLib_LICENSE.txt`, а происхождение копии и внесённые в неё правки
+описаны в `KenshiLib_ORIGIN.md`.
